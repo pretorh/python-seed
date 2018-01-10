@@ -1,5 +1,5 @@
-SRC_DIR   := ./src/app
-TEST_DIR  := ./src/test
+SRC_DIR   := ./src
+TEST_DIR  := ./tests
 OUT_DIR   := ./dist
 SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.py)
 TEST_FILES:= $(shell find $(TEST_DIR) -type f -name *.py)
