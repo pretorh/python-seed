@@ -1,30 +1,32 @@
-SRC_DIR   := ./src
-OUT_DIR   := ./out
-SRC_FILES := $(shell find ./src -type f -name *.py)
+SRC_DIR   := ./src/app
+TEST_DIR  := ./src/test
+OUT_DIR   := ./dist
+SRC_FILES := $(shell find $(SRC_DIR) -type f -name *.py)
+TEST_FILES:= $(shell find $(TEST_DIR) -type f -name *.py)
 OUT_FILES := $(patsubst $(SRC_DIR)/%.py,$(OUT_DIR)/%.py,$(SRC_FILES))
 
 all: lint copy
 
 copy: $(OUT_FILES)
 
-lint: $(OUT_DIR)/lint
+lint: .lint
 
 test: copy
-	@PYTHONPATH=$(OUT_DIR)/app python -m unittest discover -v --start $(OUT_DIR)/test --pattern *.py
+	@PYTHONPATH=$(OUT_DIR) python -m unittest discover -v --start $(TEST_DIR) --pattern *.py
 
 clean:
 	rm -rf $(OUT_DIR)
 
-.PHONY: copy test pycodestyle pylint
+.PHONY: copy test lint
 
 $(OUT_DIR):
 	mkdir -pv $@
 
-$(OUT_DIR)/lint: $(SRC_FILES)
+.lint: $(SRC_FILES) $(TEST_FILES)
 	@mkdir -pv `dirname $@`
 	pycodestyle --max-line-length=110 --show-source --show-pep8 --count $?
 	pylint --disable=missing-docstring,too-few-public-methods --errors-only $?
-	@touch $@
+	@date > $@
 
 $(OUT_DIR)/%.py: $(SRC_DIR)/%.py $(OUT_DIR)
 	@mkdir -pv `dirname $@`
