@@ -1,1 +1,2 @@
-print("hello from sub/f")
+def simple_plus(x, y):
+    return x + y

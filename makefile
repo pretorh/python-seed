@@ -10,7 +10,7 @@ copy: $(OUT_FILES)
 lint: $(OUT_DIR)/lint
 
 test: copy
-	python -m unittest discover --start $(OUT_DIR)/test --pattern *.py
+	@PYTHONPATH=$(OUT_DIR)/app python -m unittest discover -v --start $(OUT_DIR)/test --pattern *.py
 
 clean:
 	rm -rf $(OUT_DIR)
